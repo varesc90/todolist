@@ -1,7 +1,7 @@
 const {Pool,Client} = require('pg');
 
 
-const connectionString = 'postgresql://todoapp:todoapp@localhost:54320/todos'
+const connectionString = 'postgres://todoapp:todoapp@postgres/todos'
 
 
 

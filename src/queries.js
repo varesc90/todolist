@@ -1,10 +1,10 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
     user: 'todoapp',
-    host: 'localhost',
+    host: 'postgres',
     database: 'todos',
     password: 'todoapp',
-    port: 54320,
+    port: 5432,
 });
 
 
@@ -12,9 +12,9 @@ const pool = new Pool({
 const getTodos = (request, response) => {
     pool.query('select row_to_json(t) as data\n' +
         'from (\n' +
-        '  select td.id, td.title, json_agg(json_build_object(\'id\',st.id, \'title\', st.title, \'status\',st.status)) as subtasks\n' +
+        '  select td.id, td.title, td.status, json_agg(json_build_object(\'id\',st.id, \'title\', st.title, \'status\',st.status)) as subtasks\n' +
         '  from todo td \n' +
-        '    join subtask st on td.id = st.todo_id\n' +
+        '    left join subtask st on td.id = st.todo_id\n' +
         '  group by td.id\n' +
         ') as t\n', (error, results) => {
         if (error) {
